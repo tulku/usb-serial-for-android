@@ -1,9 +1,21 @@
-UsbSerialLibrary/bin
-UsbSerialLibrary/gen
+.classpath
+.gradle
+.project
+.settings
+bin
+build
+build.xml
+gen
+libs
+local.properties
+proguard-project.txt
+robot_main/src/main/obj
+robot_main/run.sh
 
-UsbSerialExamples/bin
-UsbSerialExamples/gen
-UsbSerialLibrary/dictionary.txt
-UsbSerialLibrary/local.properties
-UsbSerialLibrary/proguard-project.txt
-UsbSerialLibrary/build.xml
+# These are Android Studio files, might be worth including these later.
+.idea
+*.iml
+build.log
+build-log.xml
+docs.iml
+
