@@ -23,8 +23,11 @@ package com.hoho.android.usbserial.examples;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,6 +36,8 @@ import com.hoho.android.usbserial.util.HexDump;
 import com.hoho.android.usbserial.util.SerialInputOutputManager;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,6 +66,7 @@ public class SerialConsoleActivity extends Activity {
     private TextView mTitleTextView;
     private TextView mDumpTextView;
     private ScrollView mScrollView;
+    private Button mButton;
 
     private final ExecutorService mExecutor = Executors.newSingleThreadExecutor();
 
@@ -92,6 +98,7 @@ public class SerialConsoleActivity extends Activity {
         mTitleTextView = (TextView) findViewById(R.id.demoTitle);
         mDumpTextView = (TextView) findViewById(R.id.consoleText);
         mScrollView = (ScrollView) findViewById(R.id.demoScroller);
+        mButton = (Button) findViewById(R.id.button);
     }
 
     @Override
@@ -131,8 +138,21 @@ public class SerialConsoleActivity extends Activity {
                 return;
             }
             mTitleTextView.setText("Serial device: " + sDriver.getClass().getSimpleName());
-        }
+         }
         onDeviceStateChange();
+    }
+
+    public void ButtonOnClick(View v) {
+      byte[] bytes = new byte[10];
+      for (int i = 0; i < 10; i++) {
+        bytes[i] = (byte) i;
+      }
+      Log.d(TAG, "****** " + new String(bytes));
+      try {
+        sDriver.write(bytes, 100);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
     private void stopIoManager() {
@@ -157,8 +177,8 @@ public class SerialConsoleActivity extends Activity {
     }
 
     private void updateReceivedData(byte[] data) {
-        final String message = "Read " + data.length + " bytes: \n"
-                + HexDump.dumpHexString(data) + "\n\n";
+        String s = new String(data);
+        final String message = "Read " + data.length + " bytes: " + s + "\n";
         mDumpTextView.append(message);
         mScrollView.smoothScrollTo(0, mDumpTextView.getBottom());
     }

@@ -50,7 +50,7 @@ public class CdcAcmSerialDriver extends CommonUsbSerialDriver {
         Log.d(TAG, "claiming interfaces, count=" + mDevice.getInterfaceCount());
 
         Log.d(TAG, "Claiming control interface.");
-        mControlInterface = mDevice.getInterface(0);
+        mControlInterface = mDevice.getInterface(1);
         Log.d(TAG, "Control iface=" + mControlInterface);
         // class should be USB_CLASS_COMM
 
@@ -61,16 +61,16 @@ public class CdcAcmSerialDriver extends CommonUsbSerialDriver {
         Log.d(TAG, "Control endpoint direction: " + mControlEndpoint.getDirection());
 
         Log.d(TAG, "Claiming data interface.");
-        mDataInterface = mDevice.getInterface(1);
+        mDataInterface = mDevice.getInterface(2);
         Log.d(TAG, "data iface=" + mDataInterface);
         // class should be USB_CLASS_CDC_DATA
 
         if (!mConnection.claimInterface(mDataInterface, true)) {
             throw new IOException("Could not claim data interface.");
         }
-        mReadEndpoint = mDataInterface.getEndpoint(1);
+        mReadEndpoint = mDataInterface.getEndpoint(0);
         Log.d(TAG, "Read endpoint direction: " + mReadEndpoint.getDirection());
-        mWriteEndpoint = mDataInterface.getEndpoint(0);
+        mWriteEndpoint = mDataInterface.getEndpoint(1);
         Log.d(TAG, "Write endpoint direction: " + mWriteEndpoint.getDirection());
     }
 
@@ -241,6 +241,10 @@ public class CdcAcmSerialDriver extends CommonUsbSerialDriver {
         supportedDevices.put(Integer.valueOf(UsbId.VENDOR_LEAFLABS),
                 new int[] {
                     UsbId.LEAFLABS_MAPLE,
+                });
+        supportedDevices.put(Integer.valueOf(UsbId.VENDOR_NXP),
+                new int[] {
+                    UsbId.MBED_1768,
                 });
         return supportedDevices;
     }
