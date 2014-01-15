@@ -68,9 +68,9 @@ public class CdcAcmSerialDriver extends CommonUsbSerialDriver {
         if (!mConnection.claimInterface(mDataInterface, true)) {
             throw new IOException("Could not claim data interface.");
         }
-        mReadEndpoint = mDataInterface.getEndpoint(1);
+        mReadEndpoint = mDataInterface.getEndpoint(0);
         Log.d(TAG, "Read endpoint direction: " + mReadEndpoint.getDirection());
-        mWriteEndpoint = mDataInterface.getEndpoint(0);
+        mWriteEndpoint = mDataInterface.getEndpoint(1);
         Log.d(TAG, "Write endpoint direction: " + mWriteEndpoint.getDirection());
     }
 
@@ -241,6 +241,10 @@ public class CdcAcmSerialDriver extends CommonUsbSerialDriver {
         supportedDevices.put(Integer.valueOf(UsbId.VENDOR_LEAFLABS),
                 new int[] {
                     UsbId.LEAFLABS_MAPLE,
+                });
+        supportedDevices.put(Integer.valueOf(UsbId.VENDOR_HOKUYO),
+                new int[] {
+                    UsbId.UTM30LX,
                 });
         return supportedDevices;
     }
