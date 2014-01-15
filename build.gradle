@@ -1,16 +1,45 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '1.6'
+  gradleVersion = '1.9'
 }
-
-ext.androidBuildToolsVersion = "17"
 
 buildscript {
+    def rosMavenPath = "$System.env.ROS_MAVEN_PATH".split(':').collect { 'file://' + it }
     repositories {
-        mavenCentral()
+        rosMavenPath.each { p ->
+            maven {
+                url p
+            }
+        }
+        mavenLocal()
+        maven {
+            url 'https://github.com/rosjava/rosjava_mvn_repo/raw/master'
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath group: 'org.ros.rosjava_bootstrap', name: 'gradle_plugins', version: '0.1.+'
     }
 }
+
+apply plugin: 'catkin'
+
+
+allprojects {
+    /* A github url provides a good standard unique name for your project */
+    group 'com.hoho.android.usbserial'
+    version = project.catkin.pkg.version
+}
+
+subprojects {
+    /* See https://github.com/rosjava/rosjava_bootstrap (look for gradle_plugins)
+       to see what is going on under the hood. */
+    apply plugin: 'ros-android'
+    buildscript {
+        dependencies {
+            classpath 'com.android.tools.build:gradle:0.7.+'
+        }
+    }
+}
+
+/*ext.androidBuildToolsVersion = "17"*/

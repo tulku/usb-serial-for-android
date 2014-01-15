@@ -3,11 +3,17 @@ apply plugin: 'android'
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':UsbSerialLibrary')
-    compile project(':UsbSerialLibrary')
 }
 
 android {
     compileSdkVersion 18
+
+    lintOptions {
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+    }
+
+/*
     buildToolsVersion androidBuildToolsVersion
 
     sourceSets {
@@ -33,4 +39,5 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+*/
 }

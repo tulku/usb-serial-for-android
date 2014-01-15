@@ -1,2 +1,2 @@
 include ':UsbSerialLibrary'
-include ':UsbSerialExamples'
+/*include ':UsbSerialExamples'*/
